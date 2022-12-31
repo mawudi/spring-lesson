@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--把配置信息加载到Mybatis框架中-->
+    <properties resource="jdbc.properties"/>
+
+    <settings>
+        <!--  开启驼峰匹配：完成经典的数据库命名到java属性的映射
+                          相当于去掉数据中的名字的下划线，和java进行匹配
+                          user_id => userId
+
+        <setting name="mapUnderscoreToCamelCase" value="true"/> -->
+        <!--配置打印SQL语句日志信息的配置-->
+        <setting name="logImpl" value="org.apache.ibatis.logging.stdout.StdOutImpl"/>
+    </settings>
+
+    <!--配置Mybatis数据源/环境-->
+    <environments default="mysql">
+        <environment id="mysql">
+            <!--
+                配置事务管理器
+                JDBC: 把事务管理交给自定数据执行
+                MANAGED：不进行事务控制，而把事务控制交给其他容器进行管理，当mybatis整合到spring中
+            -->
+            <transactionManager type="JDBC"/>
+            <!--
+                数据源类型：
+                UNPOOLED: 每个数据请求都会打开连接和关闭连接，不使用连接池
+                POOLED: 使用数据库连接池获取连接
+                JNDI: 创建EJB方式创建数据源
+            -->
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver_class}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <!--配置Mybatis对象映射文件-->
+    <mappers>
+        <!--基于资源路径-->
+        <!--<mapper resource="mapper/UserMapper.xml" />-->
+        <!--基于URL配置-->
+        <!--<mapper url="file:F:\JAVAPRO\spring-lesson\day4-Spring\src\main\resources\mapper\UserMapper1.xml" />-->
+        <!--
+            基于Mapper接口配置
+            1、接口名称必须完全和映射文件名称一致(不包括后缀名)
+            2、接口文件和映射配置文件必须置于同一级目录下面
+            3、对应映射配置文件的命名空间必须是接口全名称
+        -->
+        <!--<mapper class="com.xmg.mybatis.mapper.UserMapper" />-->
+        <!--通过扫描形式将Mapper集合处理（官网推荐）-->
+       <package name="com.xmg.mybatis.mapper"/>
+    </mappers>
+</configuration>

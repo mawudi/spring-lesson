@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+    1、必须制定Mapper配置文件的命名空间
+    2、在Mapper配置文件对应insert，delete，update，select元素里面基本写都是SQL
+-->
+<mapper namespace="com.xmg.mybatis.mapper.UserMapper">
+    <!--自定义映射Map-->
+    <resultMap id="userMap" type="com.xmg.mybatis.pojo.User">
+        <!--注解及普通属性设置-->
+        <!--主键设置-->
+        <id property="userId" column="userId" />
+        <!--非主键-->
+        <result property="userName" column="userName" />
+        <result property="userGender" column="userGender" />
+        <result property="userBirthday" column="userBirthday" />
+    </resultMap>
+
+    <!--编写查询方法
+        id: 定义查询标识符，在当前命名空间下面必须是唯一的
+        parameterType：指定参数，一般如果查询语句中只有一个参数情况下就能够省略
+        resultType： 查询后的结果类型
+        resultMap: 接收自定义映射后结果类型
+
+        解决列名和映射属性名不不一致的问题
+        1、在查询语句中使用as关键字，给列名指定查询后别名称
+        2、配置列与属性名称映射，创建一个ResultMap元素
+    -->
+    <!--<select id="queryUserById" parameterType="java.lang.Long" resultType="com.zhaoxi.java.vip.mybatis.pojo.User">
+        select user_id, `name` as userName, user_gender, user_birthday from t_user where user_id = #{id}
+    </select>-->
+
+    <select id="queryUserById" parameterType="java.lang.Long" resultMap="userMap">
+        select userId, userName, userGender, userBirthday
+        from t_user where userId = #{id}
+    </select>
+</mapper>
